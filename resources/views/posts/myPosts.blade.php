@@ -20,7 +20,7 @@
                         <h5 class="blog-post-meta">
                             Category: {{ $post->category['name'] }}
                         </h5>
-                        <img src="{{url('/'.'images/'.$post->img_url)}}" width="400" height="300">
+                        <img src="{{url('/'.'img/'.$post->img_url)}}" width="400" height="300">
                         <p class="text-left" style="width: 65%">{{ $post->body }}</p>
                     </div>
                 @endforeach

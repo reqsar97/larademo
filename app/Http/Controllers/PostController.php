@@ -56,7 +56,7 @@ class PostController extends Controller
 
         $inputs['img_url'] = time().'.'.$image->getClientOriginalExtension();
 
-        $destinationPath = public_path('\images');
+        $destinationPath = public_path('\img');
 
         $image->move($destinationPath, $inputs['img_url']);
 
@@ -89,7 +89,6 @@ class PostController extends Controller
     }
 
     public function deleteData($id, Post $post){
-        dd($post);
         $post->destroy($id);
         return redirect('/posts');
     }
