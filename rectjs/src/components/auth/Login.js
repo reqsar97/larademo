@@ -16,10 +16,19 @@ class Login extends Component{
 		}else{
 			isLogged = false;
 		}
+
+		let fieldError = {
+			email: '',
+			password: ''
+
+		}
+
 		this.state = {
 			email: '',
 			password: '',
-			isLogged: isLogged
+			isLogged: isLogged,
+			hasError: false,
+			errors: fieldError
 		};
 
 		console.log(this.state.isLogged);
@@ -58,11 +67,29 @@ class Login extends Component{
 		    self.setState({isLogged: true});
 		  })
 		  .catch(function (error) {
-		    console.log(error);
+		    var errors = error.response.data.errors;
+		    console.log(errors);
+        	self.setState({
+        		hasError: true,
+        		errors: errors
+        	});
 		  });
 	}
 
     render(){
+
+    	let fieldError = {
+			name: '',
+			email: '',
+			password: ''
+
+		}
+
+		if(this.state.hasError){
+			for(let error in this.state.errors){
+				fieldError[error] = this.state.errors[error][0];
+			}
+		}
     	
     	let redirect = this.state.isLogged ? <Redirect to="api" /> : null;
         return (
@@ -81,6 +108,9 @@ class Login extends Component{
 
 			                            <div className="col-md-6">
 			                                <input id="email" type="email" className="form-control" name="email" value={this.state.email} required autoFocus onChange={this.onHandleChangeEmail}/>
+			                                <span className="help-block">
+                                        		<strong>{ fieldError['email'] }</strong>
+                                    		</span>
 			                            </div>
 			                        </div>
 
@@ -89,6 +119,9 @@ class Login extends Component{
 
 			                            <div className="col-md-6">
 			                                <input id="password" type="password" className="form-control" onChange={this.onHandleChangePassword} value={this.state.password} name="password" required />
+			                                <span className="help-block">
+                                        		<strong>{ fieldError['password'] }</strong>
+                                    		</span>
 			                            </div>
 			                        </div>
 

@@ -14,19 +14,23 @@ class Logout extends Component {
 	componentWillMount(){
 		localStorage.setItem('isLogged', 0);
 		console.log("Logout");
-		let self = this;
 		axios.post('/api/logout', {
 			token: localStorage.getItem('token')
 		  })
-		  .then(function (response) {
+		  .then( (response) => {
 		    // console.log(response);
 		    console.log(response.data);
 		    localStorage.clear();
 		    localStorage.setItem('isLogged', 0);
-		    self.props.onLogout();
+		    this.props.onLogout();
 		  })
-		  .catch(function (error) {
-		    console.log(error);
+		  .catch(  (error) => {
+		    let status = error.response.status;
+		    if (status==422) {
+		    	localStorage.clear();
+		    	localStorage.setItem('isLogged', 0);
+		    	this.props.onLogout();
+		    }
 		  });
 	}
 

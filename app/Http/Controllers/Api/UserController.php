@@ -46,6 +46,17 @@ class UserController extends Controller
     public function login(Request $request){
         $credentials = $request->only('email', 'password');
         $token = null;
+
+
+        $validator = Validator::make($credentials, [
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors'=>$validator->errors()], 422);
+        }
+
         try {
            if (!$token = JWTAuth::attempt($credentials)) {
             return response()->json(['invalid_email_or_password'], 422);

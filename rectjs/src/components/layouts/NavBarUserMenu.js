@@ -18,7 +18,9 @@ export default class NavBarUserMenu extends Component {
                                 </Link>
                             </li>
                             <li>
-                                <a href="/category">My categories</a>
+                                <Link to='/categories' >
+                                    My categories
+                                </Link>
                             </li>
                             <li>
                                 <a href="/posts/my">My Posts</a>

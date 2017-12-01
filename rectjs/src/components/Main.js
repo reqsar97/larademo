@@ -6,7 +6,8 @@ import Login from "./auth/Login";
 import Logout from "./auth/Logout";
 import Registration from "./auth/Registration";
 
-import Category from "./categories/Category";
+import CategorySideBar from "./categories/CategorySideBar";
+import Categories from "./categories/Categories";
 
 import Post from "./posts/Post";
 import {
@@ -33,40 +34,49 @@ class Main extends Component {
         }
 
         this.state = {
-            loggedIn: isLogged
+            loggedIn: isLogged,
+            isAddCategory: false
         };
 
         this.onHandleLogin = this.onHandleLogin.bind(this);
         this.onHandleLogout = this.onHandleLogout.bind(this);
+        this.onHandleAddCategory = this.onHandleAddCategory.bind(this);
     }
 
 
     onHandleLogin(isLogged){
         this.setState({loggedIn: isLogged});
+        console.log("on Handle is Logged");
     }
 
     onHandleLogout(){
       this.setState({loggedIn: false});
-
+      console.log("on Handle is Logout");
     }
 
+    onHandleAddCategory(){
+      this.setState({
+        isAddCategory: !this.state.isAddCategory
+      });
+    }
 
     render() {
-
-        var login = <Login />;
-        console.log("Main render " + this.state.loggedIn);
         return (
             <HashRouter basename='/'>
                 <div>
                   <NavBarComponent isLogged={this.state.loggedIn}/>
                   <hr/>
-                  <Category />
+                  <CategorySideBar onAddNewCategory={this.state.isAddCategory}/>
 
                   <Route exact path="/post" component={Post}/>
+
                   <Route path="/login" render={() => <Login onLogin={this.onHandleLogin} />}/>
                   <Route path="/registration" component={Registration}/>
                   <Route path="/logout" render={() => <Logout onLogout={this.onHandleLogout} />}/>
 
+                  <Route path='/categories' render={
+                   () => <Categories url='/categories' onAddCategory={this.onHandleAddCategory} /> 
+                  } />
 
                 </div>
             </HashRouter>

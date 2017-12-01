@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NavBarUserMenu  from "./NavBarUserMenu";
 import NavBarGuestMenu  from "./NavBarGuestMenu";
+import { Link } from 'react-router-dom';
 
 class NavBarComponent extends Component{
 

@@ -113,7 +113,7 @@ export default class Registration extends Component{
 
 			                            <div className="col-md-6">
 			                                <input id="name" type="text" className="form-control" name="name" value={this.state.name} onChange={this.onHandleChangeName} required autoFocus />
-			                                <span class="help-block">
+			                                <span className="help-block">
                                         		<strong>{ fieldError['name'] }</strong>
                                     		</span>
 			                            </div>
@@ -124,7 +124,7 @@ export default class Registration extends Component{
 
 			                            <div className="col-md-6">
 			                                <input id="email" type="email" className="form-control" name="email" value={this.state.email} onChange={this.onHandleChangeEmail} required />
-			                            	<span class="help-block">
+			                            	<span className="help-block">
                                         		<strong>{ fieldError['email'] }</strong>
                                     		</span>
 			                            </div>
@@ -135,7 +135,7 @@ export default class Registration extends Component{
 
 			                            <div className="col-md-6">
 			                                <input id="password" type="password" className="form-control" name="password" value={this.state.password} onChange={this.onHandleChangePassword} required />
-			                            	<span class="help-block">
+			                            	<span className="help-block">
                                         		<strong>{ fieldError['password'] }</strong>
                                     		</span>
 			                            </div>
