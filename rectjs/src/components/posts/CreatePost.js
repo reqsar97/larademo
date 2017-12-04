@@ -44,12 +44,12 @@ export default class CreatePost extends Component {
 
 	onFileChange(e){
 		let files = e.target.files || e.dataTransfer.files;
-        if (!files.length) {
-            console.log('no files');
-        }
-        console.log(files);
-		console.log(files[0]);
-		this.setState({ image: files[0] });
+		if (!files.length) {
+		    console.log('no files');
+		}
+		console.log(files);
+			console.log(files[0]);
+			this.setState({ image: files[0] });
 	}
 
 	onHandleChangeTitle(e){
