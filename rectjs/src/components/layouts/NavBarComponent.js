@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NavBarUserMenu  from "./NavBarUserMenu";
 import NavBarGuestMenu  from "./NavBarGuestMenu";
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 
 class NavBarComponent extends Component{
 
@@ -25,10 +25,9 @@ class NavBarComponent extends Component{
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-
-                        <a className="navbar-brand" href="#">
+                        <Link to='/posts' className="navbar-brand">
                             Blog
-                        </a>
+                        </Link>
                     </div>
 
                     <div className="collapse navbar-collapse" id="app-navbar-collapse">

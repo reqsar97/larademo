@@ -54,9 +54,9 @@ export default class CategorySideBar extends Component {
 		if(this.state.ajaxDone){
 			categoriesElement = this.state.categories.map(function(value){
 				let li = (
-					<a href='#' key={value.id}>
+					<Link to={`/posts/category/${value.id}`} key={value.id} replace>
 						<li>{value.name}</li>
-					</a>
+					</Link>
 					);
 				return li;
 			});

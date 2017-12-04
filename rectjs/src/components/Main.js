@@ -9,7 +9,9 @@ import Registration from "./auth/Registration";
 import CategorySideBar from "./categories/CategorySideBar";
 import Categories from "./categories/Categories";
 
-import Post from "./posts/Post";
+import Posts from "./posts/Posts";
+import PostsRoutController from "./posts/PostsRoutController";
+
 import {
     BrowserRouter as Router,
     Route,
@@ -68,7 +70,7 @@ class Main extends Component {
                   <hr/>
                   <CategorySideBar onAddNewCategory={this.state.isAddCategory}/>
 
-                  <Route exact path="/post" component={Post}/>
+                  <Route path="/posts" component={PostsRoutController} />
 
                   <Route path="/login" render={() => <Login onLogin={this.onHandleLogin} />}/>
                   <Route path="/registration" component={Registration}/>

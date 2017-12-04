@@ -20,6 +20,7 @@ class PostController extends Controller
     public function index(Post $post){
         $posts = $post->orderBy('created_at','desc')
             ->paginate(5);
+
         return view('posts.index', compact('posts'));
     }
 
