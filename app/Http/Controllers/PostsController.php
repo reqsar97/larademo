@@ -7,14 +7,14 @@ use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 
-class PostController extends Controller
+class PostsController extends Controller
 {
     //
 
     public function __construct()
     {
     $this->middleware('auth')
-        ->except(['index','post']);
+        ->except(['index','post', 'category']);
     }
 
     public function index(Post $post){

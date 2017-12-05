@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+
 import NavBarComponent from "./layouts/NavBarComponent";
 
 import Login from "./auth/Login";
@@ -9,18 +10,15 @@ import Registration from "./auth/Registration";
 import CategorySideBar from "./categories/CategorySideBar";
 import Categories from "./categories/Categories";
 
-import Posts from "./posts/Posts";
 import PostsRoutController from "./posts/PostsRoutController";
 
 import {
-    BrowserRouter as Router,
     Route,
     Link,
     HashRouter,
     Redirect
 } from 'react-router-dom';
 import axios from "axios";
-import { Button } from 'reactstrap';
 
 class Main extends Component {
 
@@ -48,12 +46,10 @@ class Main extends Component {
 
     onHandleLogin(isLogged){
         this.setState({loggedIn: isLogged});
-        console.log("on Handle is Logged");
     }
 
     onHandleLogout(){
       this.setState({loggedIn: false});
-      console.log("on Handle is Logout");
     }
 
     onHandleAddCategory(){
@@ -88,10 +84,3 @@ class Main extends Component {
 }
 
 export default Main;
-
-/* The if statement is required so as to Render the component on pages that have a div with an ID of "root";
-*/
-
-if (document.getElementById('root')) {
-    ReactDOM.render(<Main />, document.getElementById('root'));
-}

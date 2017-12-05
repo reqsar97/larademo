@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 
 export default class NavBarUserMenu extends Component {
 
-	render(){
-		let name = localStorage.getItem('name');
-		return (
-		      <li className="dropdown">
+    render(){
+        let name = localStorage.getItem('name');
+        return (
+              <li className="dropdown">
                     <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                         {name}
                     </a>
@@ -30,5 +30,5 @@ export default class NavBarUserMenu extends Component {
                         </ul>
               </li>        
         );
-	}
+    }
 }

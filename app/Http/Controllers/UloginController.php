@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 
+
+//Controller for social login
 class UloginController extends Controller
 {
     //
@@ -61,9 +63,9 @@ class UloginController extends Controller
             // Make login user.
             Auth::loginUsingId($newUser->id, TRUE);
 
-            \Session::flash('flash_message', trans('interface.ActivatedSuccess'));
+            Session::flash('flash_message', trans('interface.ActivatedSuccess'));
 
-            return \redirect('/posts');
+            return redirect('/posts');
         }
     }
 }

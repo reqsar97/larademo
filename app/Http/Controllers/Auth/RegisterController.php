@@ -108,7 +108,7 @@ class RegisterController extends Controller
             $message->to(Input::get('email'), Input::get('username'))
                 ->subject('Verify your email address');
         });
-        return \redirect()->home();
+        return redirect()->home();
 
     }
 
@@ -122,7 +122,7 @@ class RegisterController extends Controller
         $user = User::where('confirmation_code','=', $confirmation_code)
             ->first();
 
-        if ( ! $user)
+        if ( !$user )
         {
             return redirect()->home();
         }
@@ -132,7 +132,7 @@ class RegisterController extends Controller
         $user->save();
 
 
-        return \redirect('login');
+        return redirect('login');
     }
 
 }

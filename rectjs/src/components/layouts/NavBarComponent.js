@@ -11,7 +11,7 @@ class NavBarComponent extends Component{
 
     render(){
 
-        var menu = this.props.isLogged === true ? <NavBarUserMenu />:<NavBarGuestMenu />;
+        var menu = this.props.isLogged ? <NavBarUserMenu />:<NavBarGuestMenu />;
 
         return (
             <nav className="navbar navbar-default navbar-static-top">
@@ -26,7 +26,7 @@ class NavBarComponent extends Component{
                             <span className="icon-bar"></span>
                         </button>
                         <Link to='/posts' className="navbar-brand">
-                            Blog
+                            Blog React
                         </Link>
                     </div>
 

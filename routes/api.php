@@ -1,10 +1,10 @@
 <?php
 
-Route::post('register', 'Api\UserController@register');
-Route::post('login', 'Api\UserController@login');
+Route::post('register', 'Api\UsersController@register');
+Route::post('login', 'Api\UsersController@login');
 Route::group(['middleware' => 'jwt.auth'], function () {
-    Route::get('user', 'Api\UserController@getAuthUser');
-    Route::post('logout', 'Api\UserController@logout');
+    Route::get('user', 'Api\UsersController@getAuthUser');
+    Route::post('logout', 'Api\UsersController@logout');
     Route::post('/userCategories/create', 'Api\CategoriesController@store');
     Route::get('/userCategories', 'Api\CategoriesController@index');
     Route::post('/category/{category}','Api\CategoriesController@delete');

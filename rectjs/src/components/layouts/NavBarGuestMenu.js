@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom'
 
 export default class NavBarGuestMenu extends Component {
 
-	render(){
-		return [
+    render(){
+        return [
 
             <li key="login"><Link to="/login" replace> Login</Link></li>,
-			<li key="registration"><Link to="/registration" replace>Registration</Link></li>
-		];
-	}
+            <li key="registration"><Link to="/registration" replace>Registration</Link></li>
+        ];
+    }
 }

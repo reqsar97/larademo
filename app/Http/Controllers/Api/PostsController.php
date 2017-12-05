@@ -43,7 +43,10 @@ class PostsController extends Controller
     }
 
     public function store(Request $request, Post $post){
-        $validator = Validator::make($request->all(), [
+        
+        $inputs = $request->all();
+
+        $validator = Validator::make($inputs, [
            'title'=>'required',
             'body'=>'required',
             'category_id'=>'required',
@@ -56,7 +59,6 @@ class PostsController extends Controller
 
         $user = JWTAuth::toUser($request->token);
 
-        $inputs = $request->all();
         unset($inputs['token']);
 
         $inputs['user_id'] = $user->id;
@@ -89,7 +91,10 @@ class PostsController extends Controller
     }
 
     public function updateData(Post $post){
-        $validator = Validator::make(request()->all(), [
+
+        $inputs = request()->all();
+
+        $validator = Validator::make($inputs, [
             'title'=>'required',
             'body'=>'required'
         ]);
@@ -100,12 +105,11 @@ class PostsController extends Controller
 
         $user = JWTAuth::toUser(request()->token);
 
-        $inputs = request()->all();
         unset($inputs['token']);
         $inputs['user_id'] = $user->id;
         $post->update($inputs);
 
-        return response()->json(['status'=>true,'message'=>'Post updted successfully'], 200);
+        return response()->json(['status'=>true,'message'=>'Post updated successfully'], 200);
 
     }
 
