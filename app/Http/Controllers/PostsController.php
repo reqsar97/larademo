@@ -24,7 +24,7 @@ class PostsController extends Controller
         return view('posts.index', compact('posts'));
     }
 
-    public function myPosts(Post $post){
+    public function userPosts(Post $post){
 
         $posts = $post->orderBy('created_at','desc')
             ->where('user_id',auth()->id())

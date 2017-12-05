@@ -69,7 +69,7 @@
                                         <a href="/category">My categories</a>
                                     </li>
                                     <li>
-                                        <a href="/posts/my">My Posts</a>
+                                        <a href="/posts/user">My Posts</a>
                                     </li>
                                 </ul>
                             </li>

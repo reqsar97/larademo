@@ -21,7 +21,7 @@ Route::get('/category/update/{category}', 'CategoriesController@update');
 Route::post('/category/update/{category}', 'CategoriesController@storeNewData');
 
 //Posts routes
-Route::get('/posts/my','PostsController@myPosts');
+Route::get('/posts/user','PostsController@userPosts');
 Route::get('/posts/create','PostsController@create');
 Route::post('/posts/create','PostsController@store');
 Route::get('/posts','PostsController@index');
