@@ -66,10 +66,10 @@
                                         </form>
                                     </li>
                                     <li>
-                                        <a href="/category">My categories</a>
+                                        <a href="/me/categories">My categories</a>
                                     </li>
                                     <li>
-                                        <a href="/posts/user">My Posts</a>
+                                        <a href="/me/posts">My Posts</a>
                                     </li>
                                 </ul>
                             </li>

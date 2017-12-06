@@ -10,11 +10,14 @@ use Validator;
 use Illuminate\Support\Facades\Input;
 use JWTAuth;
 use JWTAuthException;
+use App\Http\Requests\Api\StorePostRequest;
+use App\Http\Requests\Api\UpdatePostRequest;
 
 class PostsController extends Controller
 {
     //
-    public function index(Post $post){
+    public function index(Post $post)
+    {
         $posts = $post->orderBy('created_at','desc')
         	->with('category')
         	->with('user')
@@ -24,17 +27,23 @@ class PostsController extends Controller
         return response()->json(compact('posts'), 200);
     }
 
-    public function post(Post $post){
+    public function post(Post $post)
+    {
 
     	$post = $post->with(['category','user'])->where('id',$post->id)->first();
         return response()->json(compact('post'),200);
 
     }
 
-    public function userPosts(Post $post){
+    public function userPosts(Post $post)
+    {
+
+        $token = request()->all()['token'];
+
+        $user = JWTAuth::toUser($token);
 
         $posts = $post->orderBy('created_at','desc')
-            ->where('user_id',auth()->id())
+            ->where('user_id',$user->id)
             ->with('category')
         	->with('user')
             ->paginate(5);
@@ -42,26 +51,10 @@ class PostsController extends Controller
         return response()->json(compact('posts'), 200);
     }
 
-    public function store(Request $request, Post $post){
+    public function store(StorePostRequest $request, Post $post)
+    {
         
         $inputs = $request->all();
-
-        $validator = Validator::make($inputs, [
-           'title'=>'required',
-            'body'=>'required',
-            'category_id'=>'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors'=>$validator->errors()], 422);
-        }
-
-        $user = JWTAuth::toUser($request->token);
-
-        unset($inputs['token']);
-
-        $inputs['user_id'] = $user->id;
 
         $image = Input::file('image');
 
@@ -72,10 +65,12 @@ class PostsController extends Controller
         $image->move($destinationPath, $inputs['img_url']);
 
         $post->create($inputs);
+        
         return response()->json(['status'=>true,'message'=>'Post created successfully'], 200);
     }
 
-    public function category(Category $category, Post $post){
+    public function category(Category $category, Post $post)
+    {
         $posts = $post->orderBy('created_at','desc')
             ->where('category_id',$category->id)
             ->with('user')
@@ -85,28 +80,16 @@ class PostsController extends Controller
         return response()->json(compact('posts'), 200);
     }
 
-    public function deleteData($id, Post $post){
+    public function delete($id, Post $post){
         $post->destroy($id);
         return response()->json(['message' => 'Post deleted successfully']);
     }
 
-    public function updateData(Post $post){
+    public function update(UpdatePostRequest $request,Post $post)
+    {
 
-        $inputs = request()->all();
+        $inputs = $request->all();
 
-        $validator = Validator::make($inputs, [
-            'title'=>'required',
-            'body'=>'required'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors'=>$validator->errors()], 422);
-        }
-
-        $user = JWTAuth::toUser(request()->token);
-
-        unset($inputs['token']);
-        $inputs['user_id'] = $user->id;
         $post->update($inputs);
 
         return response()->json(['status'=>true,'message'=>'Post updated successfully'], 200);

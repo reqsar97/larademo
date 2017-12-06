@@ -13,21 +13,25 @@ class CategoriesController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(){
+    public function index()
+    {
 
         $categories = Category::getUserCategories(auth()->user()->id);
         return view('categories.categories', compact('categories'));
     }
 
-    public function create(){
+    public function create()
+    {
         return view('categories.create');
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
         $this->validate($request,[
             'name'=>'required'
         ]);
+        
         auth()->user()->createCategory(
             new Category(request(['name']))
         );
@@ -36,20 +40,23 @@ class CategoriesController extends Controller
 
     }
 
-    public function delete(Category $category){
+    public function delete(Category $category)
+    {
         $category->delete();
 
         return redirect()->back();
     }
 
-    public function update(Category $category){
+    public function edit(Category $category)
+    {
         return view('categories.update',compact('category'));
     }
 
-    public function storeNewData(Category $category){
+    public function update(Category $category)
+    {
         $category->name = \request('name');
         $category->save();
 
-        return redirect('/category');
+        return redirect('/me/categories');
     }
 }

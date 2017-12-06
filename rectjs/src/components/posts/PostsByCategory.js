@@ -17,7 +17,7 @@ export default class PostsByCategory extends Component {
     }
 
     getAllPostsByCategory(categoryId){
-        axios.get(`/api/posts/category/${categoryId}`)
+        axios.get(`/api/posts/categories/${categoryId}`)
             .then((response)=>{
                 console.log("ajaxDone");
                 console.log(response.data.posts.data);

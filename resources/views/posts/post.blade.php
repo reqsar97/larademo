@@ -8,7 +8,7 @@
                         <h2 class="blog-post-title">
                                 {{ $post->title }}
                             @if (!Auth::guest())
-                                <a href="{{ url('post/update/'.$post->id) }}"><img src="{{ url('/images/iconsEdit.png')}}" width="25" height="25" alt="Update" title="Update"></a>
+                                <a href="{{ url('posts/'.$post->id.'/edit') }}"><img src="{{ url('/images/iconsEdit.png')}}" width="25" height="25" alt="Update" title="Update"></a>
                                 <img src="{{ url('/images/iconsDelete.png')}}"
                                      data-toggle="modal" data-target="#myModal"
                                      style="cursor: pointer"
@@ -21,8 +21,9 @@
                                             </div>
                                             <div class="modal-body">Delete this post?</div>
                                             <div class="modal-footer">
-                                                <form class="form-group" method="post" action="/post/delete/{{$post->id}}">
+                                                <form class="form-group" method="post" action="/posts/{{$post->id}}">
                                                     {{ csrf_field() }}
+                                                    {{ method_field('DELETE') }}
                                                     <button class="btn btn-primary" type="button" data-dismiss="modal">
                                                         No
                                                     </button>

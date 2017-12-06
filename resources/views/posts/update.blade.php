@@ -16,9 +16,10 @@
 
                                 <!-- Task Delete Button -->
                                 <td>
-                                    <form method="POST" action="/post/update/{{$post->id}}" class="form-group">
+                                    <form method="POST" action="/posts/{{$post->id}}" class="form-group">
 
                                         {{ csrf_field() }}
+                                        {{ method_field('PUT') }}
 
                                         <div class="form-group">
                                             <label for="name">Title:</label>

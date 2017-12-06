@@ -1,5 +1,7 @@
 <?php
 
+
+
 Route::get('register/verify/{confirmationCode}', [
     'as' =>'login_path',
     'uses'=>'Auth\RegisterController@confirm'
@@ -8,28 +10,30 @@ Route::get('register/verify/{confirmationCode}', [
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('/home', function (){
+Route::get('/home', function ()
+{
    return redirect('/');	
 });
 
 //Categories routes
-Route::get('/category', 'CategoriesController@index');
-Route::get('/category/create', 'CategoriesController@create');
-Route::post('/category/create', 'CategoriesController@store');
-Route::delete('/category/{category}','CategoriesController@delete');
-Route::get('/category/update/{category}', 'CategoriesController@update');
-Route::post('/category/update/{category}', 'CategoriesController@storeNewData');
+Route::get('/me/categories', 'CategoriesController@index');
+Route::get('/me/categories/create', 'CategoriesController@create');
+Route::post('/categories', 'CategoriesController@store');
+Route::delete('/categories/{category}','CategoriesController@delete');
+Route::get('/me/categories/{category}/edit', 'CategoriesController@edit');
+Route::put('/me/categories/{category}', 'CategoriesController@update');
 
 //Posts routes
-Route::get('/posts/user','PostsController@userPosts');
-Route::get('/posts/create','PostsController@create');
-Route::post('/posts/create','PostsController@store');
 Route::get('/posts','PostsController@index');
-Route::get('/posts/{post}', 'PostsController@post');
-Route::get('/post/update/{post}', 'PostsController@update');
-Route::post('/post/update/{post}', 'PostsController@updateData');
-Route::post('/post/delete/{id}', 'PostsController@deleteData');
+Route::get('/me/posts','PostsController@userPosts');
+Route::get('/me/posts/create','PostsController@create');
+Route::post('/posts','PostsController@store');
+Route::get('/posts/{post}', 'PostsController@show');
+Route::get('/posts/{post}/edit', 'PostsController@edit');
+Route::put('/posts/{id}', 'PostsController@update');
+Route::delete('/posts/{id}', 'PostsController@delete');
 Route::get('/posts/category/{category}', 'PostsController@category');
+
 
 //social login
 Route::post('ulogin', 'UloginController@login');

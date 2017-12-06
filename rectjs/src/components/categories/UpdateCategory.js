@@ -29,7 +29,7 @@ export default class UpdateCategory extends Component {
         e.preventDefault();
         let name = this.state.name;
         let id = this.props.match.params.categoryId;
-        axios.post(`/api/category/update/${id}`, {
+        axios.post(`/api/categories/${id}/edit`, {
             name: name,
             token: localStorage.getItem('token')
           }).then( (response) => {

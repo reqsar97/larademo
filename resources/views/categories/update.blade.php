@@ -7,9 +7,10 @@
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form method="POST" action="{{ url('category/update/'.$category->id) }}">
+                    <form method="POST" action="{{ url('me/categories/'.$category->id) }}">
 
                         {{ csrf_field() }}
+                        {{ method_field('PUT') }}
 
                         <div class="form-group">
                             <label for="name">Old Name: {{ $category->name }}</label>

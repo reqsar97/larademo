@@ -2,7 +2,7 @@
 
 @section('content')
     <h3>My Categories</h3>
-    <a href='/category/create'> <h4>Create category</h4></a>
+    <a href='/me/categories/create'> <h4>Create category</h4></a>
     <div class="row">
         <div class="col-md-offset-3">
                 <div >
@@ -20,7 +20,8 @@
 
                                         <!-- Task Delete Button -->
                                         <td>
-                                            <form action="{{ url('category/'.$category['id']) }}" method="POST">
+                                            <form action="{{ url('/categories/'.$category['id']) }}" 
+                                                  method="POST">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
 
@@ -31,9 +32,8 @@
                                         </td>
                                         <!-- Task Update Button -->
                                         <td>
-                                            <form action="{{ url('category/update/'.$category['id']) }}" method="GET">
+                                            <form action="{{ url('me/categories/'.$category['id'].'/edit') }}" method="GET">
                                                 {{ csrf_field() }}
-
                                                 <button type="submit" class="btn btn-primary">
                                                     <i class="fa fa-btn fa-trash"></i>Update
                                                 </button>

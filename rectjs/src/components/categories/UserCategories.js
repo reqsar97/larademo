@@ -52,7 +52,7 @@ export default class UserCategories extends Component {
     }
 
     getUserCategories(){
-        axios.get('/api/userCategories', {
+        axios.get('/api/me/categories', {
             params: {
                 token: localStorage.getItem('token')
             }
@@ -71,8 +71,10 @@ export default class UserCategories extends Component {
     }
 
     onHandleClickDelete(id){
-        axios.post(`/api/category/${id}`,{
-            token: localStorage.getItem('token')
+        axios.delete(`/api/categories/${id}`,{
+            params: {
+                token: localStorage.getItem('token')
+            }
         }).then( (response) => {
             this.getUserCategories();
             this.props.onAddCategory();

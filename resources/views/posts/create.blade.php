@@ -5,7 +5,7 @@
         <div class="col-md-8 col-md-offset-2.5">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form method="POST" action="/posts/create" enctype="multipart/form-data">
+                    <form method="POST" action="/posts" enctype="multipart/form-data">
 
                         {{ csrf_field() }}
 

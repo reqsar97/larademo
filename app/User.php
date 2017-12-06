@@ -30,15 +30,18 @@ class User extends Authenticatable
         return $this->hasMany(Category::class);
     }
 
-    public function posts(){
+    public function posts()
+    {
         return $this->hasMany(Post::class);
     }
 
-    public function createCategory(Category $category){
+    public function createCategory(Category $category)
+    {
         $this->categories()->save($category);
     }
 
-    public function publish(Post $post){
+    public function publish(Post $post)
+    {
         $this->posts()->save($post);
     }
 }

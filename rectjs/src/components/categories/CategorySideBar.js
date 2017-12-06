@@ -25,7 +25,7 @@ export default class CategorySideBar extends Component {
     }
 
     getAllCategories(){
-        axios.get('/api/allCategories')
+        axios.get('/api/categories')
             .then( (response) => {
 
             let data = response.data;

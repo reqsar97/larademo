@@ -9,28 +9,21 @@ use JWTAuth;
 use App\User;
 use JWTAuthException;
 use Validator;
+use App\Http\Requests\Api\RegisterRequest;
 
 class UsersController extends Controller
 {   
     private $user;
-    public function __construct(User $user){
+    public function __construct(User $user)
+    {
         $this->user = $user;
     }
    
     //Registration with JWT token
-    public function register(Request $request){
+    public function register(RegisterRequest $request)
+    {
 
         $inputs = $request->all();
-
-        $validator = Validator::make($inputs, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors'=>$validator->errors()], 422);
-        }
 
         $confirmation_code = str_random(30);
 
@@ -45,7 +38,8 @@ class UsersController extends Controller
     }
     
     //Login with JWT token
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $inputs = $request->only('email', 'password');
         $token = null;
 
@@ -70,12 +64,14 @@ class UsersController extends Controller
         $name = $user->name;
         return response()->json(compact(['token','name']), 200);
     }
-    public function getAuthUser(Request $request){
+    public function getAuthUser(Request $request)
+    {
         $user = JWTAuth::toUser($request->token);
         return response()->json(['result' => $user]);
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request) 
+    {
 
         try {
             JWTAuth::invalidate($request->input('token'));

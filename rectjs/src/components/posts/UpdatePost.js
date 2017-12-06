@@ -32,16 +32,16 @@ export default class UpdatePost extends Component {
 
     onHandleClickSubmit(e){
         e.preventDefault();
-        axios.post(`/api/post/update/${this.state.id}`, {
-            token: localStorage.getItem('token'),
-            title: this.state.title,
-            body: this.state.body,
+        axios.put(`/api/posts/${this.state.id}`, {
+                token: localStorage.getItem('token'),
+                title: this.state.title,
+                body: this.state.body,
         })
             .then( (response) => {
                 console.log(response);
                 this.setState({createPostSuccess: true})
             }).catch( (error) => {
-                var errors = error.response.data.errors;
+                var errors = error.response.data;
                 this.setState({errors: errors});
             });
 

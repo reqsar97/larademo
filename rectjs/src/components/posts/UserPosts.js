@@ -17,11 +17,14 @@ export default class UserPosts extends Component {
     }
 
     getAllUserPosts(){
-        axios.get('/api/posts')
+        axios.get('/api/me/posts',{
+          params: {
+            token: localStorage.getItem('token')
+          }
+        })
           .then( (response) => {
-            console.log("Updatic heto mtav stegh?");    
             let data = response.data.posts.data;
-            console.log(data, "Ajaxo mejo")
+            console.log(response);
             this.setState({
                 posts: data,
                 ajaxDone: true,

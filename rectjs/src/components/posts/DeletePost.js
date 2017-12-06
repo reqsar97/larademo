@@ -10,8 +10,10 @@ export default class DeletePost extends Component {
 
     componentDidMount(){
         let id = this.props.match.params.id;
-        axios.post(`/api/post/delete/${id}`,{
-            token: localStorage.getItem('token')
+        axios.delete(`/api/posts/${id}`,{
+            params: {
+                token: localStorage.getItem('token')
+            }
         }).then( (response) => {
             console.log(response);
         }).catch( (error) => {

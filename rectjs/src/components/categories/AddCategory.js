@@ -27,7 +27,7 @@ export default class AddCategory extends Component {
     onHandleSubmit(e){
         e.preventDefault();
         let name = this.state.name;
-        axios.post('/api/userCategories/create', {
+        axios.post('/api/categories', {
             name: name,
             token: localStorage.getItem('token')
           }).then( (response) => {

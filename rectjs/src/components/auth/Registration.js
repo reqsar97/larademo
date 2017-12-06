@@ -9,6 +9,13 @@ export default class Registration extends Component{
     constructor(props){
         super(props);
 
+        let errors = {
+            name: [],
+            email: [],
+            password: [],
+
+        };
+
         this.state = {
             name: '',
             email: '',
@@ -67,7 +74,7 @@ export default class Registration extends Component{
             this.setState({success: true})
           })
           .catch( (error) => {
-            var errors = error.response.data.errors;
+            var errors = error.response.data;
             this.setState({errors: errors});
           });
 

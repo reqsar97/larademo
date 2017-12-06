@@ -2,7 +2,7 @@
 
 @section('content')
     <h3>My Posts</h3>
-    <a href='/posts/create'> <h4>Create Post</h4></a>
+    <a href='/me/posts/create'> <h4>Create Post</h4></a>
     <div class="row">
         <div class="col-md-offset-3">
             <div >
