@@ -9,7 +9,7 @@ Route::group(['middleware' => 'jwt.auth'], function ()
     //categories routes
     Route::get('/me/categories', 'Api\CategoriesController@getAuthUserCategories');
     Route::post('/categories', 'Api\CategoriesController@store');
-    Route::post('/categories/{category}/edit', 'Api\CategoriesController@storeNewData');
+    Route::post('/categories/{category}/edit', 'Api\CategoriesController@update');
     Route::delete('/categories/{category}','Api\CategoriesController@delete');
 
     Route::post('logout', 'Api\UsersController@logout');
@@ -25,5 +25,5 @@ Route::group(['middleware' => 'jwt.auth'], function ()
 Route::get('/categories', 'Api\CategoriesController@getAllCategories');
 
 Route::get('/posts','Api\PostsController@index');
-Route::get('/posts/{post}', 'Api\PostsController@post');
-Route::get('/posts/categories/{category}', 'Api\PostsController@category');
+Route::get('/posts/{post}', 'Api\PostsController@show');
+Route::get('/posts/categories/{category}', 'Api\PostsController@postsBycategory');

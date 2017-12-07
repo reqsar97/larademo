@@ -30,7 +30,6 @@ class CategoriesController extends Controller
 
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->only('name'), [
             'name' => 'required|string|max:255',
         ]);
@@ -54,7 +53,7 @@ class CategoriesController extends Controller
         return response()->json(['message' => 'Category deleted successfully']);
     }
 
-    public function storeNewData(Category $category)
+    public function update(Category $category)
     {
         $category->name = request('name');
         $category->save();

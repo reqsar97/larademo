@@ -18,13 +18,6 @@ class Category extends Model
             ->toArray();
     }
 
-    public static function getUserCategories($id)
-    {
-        return Category::where('user_id','=',$id)
-            ->get()
-            ->toArray();
-    }
-
     public function posts()
     {
         return $this->hasMany('App\Post');
