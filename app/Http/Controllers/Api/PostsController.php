@@ -27,7 +27,7 @@ class PostsController extends Controller
         return response()->json(compact('posts'), 200);
     }
 
-    public function post(Post $post)
+    public function show(Post $post)
     {
 
     	$post = $post->with(['category','user'])->where('id',$post->id)->first();
@@ -69,7 +69,7 @@ class PostsController extends Controller
         return response()->json(['status'=>true,'message'=>'Post created successfully'], 200);
     }
 
-    public function category(Category $category, Post $post)
+    public function postsBycategory(Category $category, Post $post)
     {
         $posts = $post->orderBy('created_at','desc')
             ->where('category_id',$category->id)
