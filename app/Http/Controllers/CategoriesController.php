@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use Illuminate\Http\Request;
 use App\Services\CategoryService;
 use App\Http\Requests\CategoryRequest;
 
@@ -32,7 +30,8 @@ class CategoriesController extends Controller
 
     public function store(CategoryRequest $request)
     {
-        $this->categoryService->create($request->all());
+        $inputs = $request->all();
+        $this->categoryService->create($inputs);
         return redirect('/me/categories');
     }
 

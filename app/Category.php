@@ -10,14 +10,6 @@ class Category extends Model
 
     protected $fillable = ['name','user_id'];
 
-    public static function categories()
-    {
-        return DB::table('categories')->select(
-            DB::raw('name,id'))
-            ->get()
-            ->toArray();
-    }
-
     public function posts()
     {
         return $this->hasMany('App\Post');

@@ -7,6 +7,8 @@ use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use PhpParser\Error;
+use App\Http\Requests\LoginRequest;
+
 
 class LoginController extends Controller
 {
@@ -41,28 +43,19 @@ class LoginController extends Controller
     }
 
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-
-        $this->validate($request,[
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
-
-        $confirmed = User::where('confirmed', '=', '0')->
-                        where('email','=',$request->email)->first();
-
+        $email = $request->email;
+        $confirmed = User::where('confirmed', '0')
+                          ->where('email',$email)
+                          ->first();
         if ($confirmed != null && $confirmed->confirmed==0){
             $message = "You are not confirmed you Email!";
             return view('auth.login', compact('message'));
         }
-
         if (!auth()->attempt(request(['email','password']))){
             return $this->sendFailedLoginResponse($request);
-
         }
-
         return redirect()->home();
     }
 

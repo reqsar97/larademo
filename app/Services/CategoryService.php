@@ -15,6 +15,11 @@ class CategoryService
     $this->categories = $categories;
   }
 
+  public function all()
+  {
+    return $this->categories->all();
+  }
+
   public function create($inputs)
   {
     $this->categories->create($inputs);

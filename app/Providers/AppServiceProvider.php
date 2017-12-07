@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
 
         view()->composer('layouts.sidebar', function($view) {
             $view->with([
-                'categories' =>\App\Category::categories(),
+                'categories' =>\App\Category::all(),
                 'postsCount' => Post::all()->count(),
                 'usersCount' => User::all()->count(),
             ]);

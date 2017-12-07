@@ -2,100 +2,77 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\Post;
-use Illuminate\Http\Request;
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
-use Illuminate\Support\Facades\Input;
+use App\Http\Requests\PostRequest;
+use App\Services\CategoryService;
+use App\Services\PostService;
 
 class PostsController extends Controller
 {
     //
-
-    public function __construct()
+    protected $postService;
+    public function __construct(PostService $postService)
     {
-    $this->middleware('auth')
-        ->except(['index','post', 'category']);
+      $this->middleware('auth')
+           ->except(['index','post', 'category']);
+      $this->postService = $postService;
     }
 
-    public function index(Post $post)
+    public function index()
     {
-        $posts = $post->orderBy('created_at','desc')
-            ->paginate(5);
-
+        $posts = $this->postService->all();
         return view('posts.index', compact('posts'));
     }
 
-    public function userPosts(Post $post)
+    public function showByUser()
     {
-
-        $posts = $post->orderBy('created_at','desc')
-            ->where('user_id',auth()->id())
-            ->paginate(5);
-
+        $id = auth()->id();
+        $posts = $this->postService->getByAuthorId($id);
         return view('posts.myPosts',compact('posts'));
     }
 
-    public function create()
+    public function create(CategoryService $categoryService)
     {
-        $categories1 = Category::categories();
-
-        return view('posts.create', compact('categories1'));
+        $categories = $categoryService->all();
+        return view('posts.create', compact('categories'));
     }
 
-    public function store(StorePostRequest $request, Post $post)
+    public function store(PostRequest $request)
     {
-
         $inputs = $request->all();
-        
-        $image = Input::file('image');
-
-        $inputs['img_url'] = time().'.'.$image->getClientOriginalExtension();
-
-        $destinationPath = public_path('img');
-
-        $image->move($destinationPath, $inputs['img_url']);
-        
-        $post->create($inputs);
-
-        return redirect('/posts/user');
+        $this->postService->create($inputs);
+        return redirect('/me/posts');
     }
 
-    public function show(Post $post)
+    public function show($id)
     {
+        $post = $this->postService->getById($id);
         return view('posts.post', compact('post'));
     }
 
-    public function edit(Post $post)
+    public function edit($id, CategoryService $categoryService)
     {
-        $categories1 = Category::categories();
-        return view('posts.update',compact(['post','categories1']));
+        $categories = $categoryService->all();
+        $post = $this->postService->getById($id);
+        return view('posts.update',compact(['post','categories']));
     }
 
-    public function update(UpdatePostRequest $request, $id){
-
+    public function update(PostRequest $request, $id)
+    {
         $inputs = $request->all();
-        
-        $post = Post::where('id',$id)->first();
-        $post->update($inputs);
-
-        return redirect("/posts/$post->id");
-
+        $this->postService->update($inputs, $id);
+        return redirect("/posts/$id");
     }
 
-    public function delete($id, Post $post)
+    public function delete($id)
     {
-        $post->destroy($id);
+        $this->postService->delete($id);
         return redirect('/posts');
     }
 
-    public function category(Category $category, Post $post)
+    public function showByCategory($id, CategoryService $categoryService)
     {
-        $posts = $post->orderBy('created_at','desc')
-            ->where('category_id',$category->id)
-            ->paginate(5);
-
+        $posts = $this->postService->getByCategoryId($id);
+        $category = $categoryService->getById($id);
         return view('posts.category',compact(['posts','category']));
     }
 }
