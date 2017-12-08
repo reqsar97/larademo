@@ -29,7 +29,7 @@ export default class UpdateCategory extends Component {
         e.preventDefault();
         let name = this.state.name;
         let id = this.props.match.params.categoryId;
-        axios.post(`/api/categories/${id}/edit`, {
+        axios.put(`/api/categories/${id}`, {
             name: name,
             token: localStorage.getItem('token')
           }).then( (response) => {
@@ -59,9 +59,9 @@ export default class UpdateCategory extends Component {
                                 <div className="form-group">
                                     <label htmlFor="name">Name:</label>
                                     <input type="text"
-                                           className="form-control" 
-                                           id="name" 
-                                           name="name" 
+                                           className="form-control"
+                                           id="name"
+                                           name="name"
                                            onChange={this.onHandleChangeName}
                                     />
                                     <span className="help-block">
@@ -69,9 +69,9 @@ export default class UpdateCategory extends Component {
                                     </span>
                                 </div>
 
-                                <button 
-                                    type="submit" 
-                                    className="btn btn-primary" 
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
                                     onClick={this.onHandleSubmit}>
                                     Update
                                 </button>

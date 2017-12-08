@@ -3192,8 +3192,7 @@ var SinglePost = function (_Component) {
 
             var id = this.props.match.params.id;
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get("/api/posts/" + id).then(function (response) {
-                console.log(response.data.post);
-                var data = response.data.post;
+                var data = response.data.resource.post;
                 _this2.setState({
                     body: data.body,
                     category: data.category.name,
@@ -24805,14 +24804,15 @@ var Login = function (_Component) {
                 email: email,
                 password: password
             }).then(function (response) {
-
-                localStorage.setItem('token', response.data.token);
-                localStorage.setItem('name', response.data.name);
+                var data = response.data.resourse;
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('name', data.name);
                 localStorage.setItem('isLogged', 1);
 
                 _this2.props.onLogin(true);
                 _this2.setState({ isLogged: true });
             }).catch(function (error) {
+                console.log(error);
                 var errors = error.response.data.errors;
                 console.log(errors);
                 _this2.setState({
@@ -26447,7 +26447,8 @@ var CategorySideBar = function (_Component) {
 
             __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get('/api/categories').then(function (response) {
 
-                var data = response.data;
+                var data = response.data.resource;
+                console.log(response);
                 _this2.setState({
                     ajaxDone: true,
                     categories: data.categories,
@@ -26470,7 +26471,6 @@ var CategorySideBar = function (_Component) {
         key: 'render',
         value: function render() {
             var categoriesElement = [];
-
             if (this.state.ajaxDone) {
                 categoriesElement = this.state.categories.map(function (value) {
                     var li = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -26721,8 +26721,7 @@ var UserCategories = function (_Component) {
                     token: localStorage.getItem('token')
                 }
             }).then(function (response) {
-
-                var data = response.data.categories;
+                var data = response.data.resource.categories;
                 _this2.setState({
                     categories: data,
                     ajaxDone: true
@@ -26867,7 +26866,6 @@ var AddCategory = function (_Component) {
                 name: name,
                 token: localStorage.getItem('token')
             }).then(function (response) {
-                console.log(response.status);
                 _this2.setState({
                     isAddCategory: true
                 });
@@ -27007,7 +27005,7 @@ var UpdateCategory = function (_Component) {
             e.preventDefault();
             var name = this.state.name;
             var id = this.props.match.params.categoryId;
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post('/api/categories/' + id + '/edit', {
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.put('/api/categories/' + id, {
                 name: name,
                 token: localStorage.getItem('token')
             }).then(function (response) {
@@ -27214,8 +27212,7 @@ var Posts = function (_Component) {
             var _this2 = this;
 
             __WEBPACK_IMPORTED_MODULE_3_axios___default.a.get('/api/posts').then(function (response) {
-                console.log(response.data.posts.data);
-                var data = response.data.posts.data;
+                var data = response.data.resource.posts.data;
                 _this2.setState({
                     posts: data,
                     ajaxDone: true
@@ -27330,8 +27327,8 @@ var UserPosts = function (_Component) {
                     token: localStorage.getItem('token')
                 }
             }).then(function (response) {
-                var data = response.data.posts.data;
-                console.log(response);
+                var data = response.data.resource.posts.data;
+                console.log(data, 123);
                 _this2.setState({
                     posts: data,
                     ajaxDone: true,
@@ -27469,8 +27466,7 @@ var UserSinglePost = function (_Component) {
 
             var id = this.props.match.params.id;
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get("/api/posts/" + id).then(function (response) {
-                console.log(response.data.post);
-                var data = response.data.post;
+                var data = response.data.resource.post;
                 _this2.setState({
                     body: data.body,
                     category: data.category.name,
@@ -27619,22 +27615,57 @@ var UpdatePost = function (_Component) {
         // code
 
 
+        var errors = {
+            title: [],
+            body: [],
+            image: []
+        };
+
         var id = _this.props.match.params.id;
         _this.state = {
             id: id,
             title: '',
             body: '',
+            image: '',
+            category: '',
+            categories: [],
             updatePostSucces: false,
-            errors: []
+            errors: errors,
+            hasError: false
         };
 
+        _this.onFileChange = _this.onFileChange.bind(_this);
         _this.onHandleChangeTitle = _this.onHandleChangeTitle.bind(_this);
+        _this.onHandleChangeCategory = _this.onHandleChangeCategory.bind(_this);
         _this.onHandleChangeBody = _this.onHandleChangeBody.bind(_this);
         _this.onHandleClickSubmit = _this.onHandleClickSubmit.bind(_this);
+
+        _this.getAllCategories();
         return _this;
     }
 
     _createClass(UpdatePost, [{
+        key: "getAllCategories",
+        value: function getAllCategories() {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/categories').then(function (response) {
+
+                var data = response.data.resource;
+                _this2.setState({
+                    categories: data.categories
+                });
+            }).catch(function (error) {
+                console.log(error);
+            });
+        }
+    }, {
+        key: "onFileChange",
+        value: function onFileChange(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            this.setState({ image: files[0] });
+        }
+    }, {
         key: "onHandleChangeTitle",
         value: function onHandleChangeTitle(e) {
             var title = e.target.value;
@@ -27647,120 +27678,172 @@ var UpdatePost = function (_Component) {
             this.setState({ body: body });
         }
     }, {
+        key: "onHandleChangeCategory",
+        value: function onHandleChangeCategory(e) {
+            var category = e.target.value;
+            this.setState({ category: category });
+        }
+    }, {
         key: "onHandleClickSubmit",
         value: function onHandleClickSubmit(e) {
-            var _this2 = this;
+            var _this3 = this;
 
             e.preventDefault();
-            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.put("/api/posts/" + this.state.id, {
-                token: localStorage.getItem('token'),
-                title: this.state.title,
-                body: this.state.body
-            }).then(function (response) {
-                console.log(response);
-                _this2.setState({ createPostSuccess: true });
+            var data = new FormData();
+            data.append('title', this.state.title);
+            data.append('body', this.state.body);
+            data.append('category_id', this.state.category);
+            data.append('image', this.state.image);
+            data.append('token', localStorage.getItem('token'));
+
+            __WEBPACK_IMPORTED_MODULE_2_axios___default.a.post('/api/posts', data).then(function (response) {
+                _this3.setState({ updatePostSucces: true });
             }).catch(function (error) {
+                console.log(error);
                 var errors = error.response.data;
-                _this2.setState({ errors: errors });
+                _this3.setState({ errors: errors });
             });
         }
     }, {
         key: "render",
         value: function render() {
-
-            var redirect = this.state.createPostSuccess && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["c" /* Redirect */], {
+            var option = __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "option",
+                { value: "id" },
+                "Category NAme"
+            );
+            if (this.state.categories) {
+                option = this.state.categories.map(function (value) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "option",
+                        { value: value.id, key: value.id },
+                        value.name
+                    );
+                });
+            }
+            var redirect = this.state.updatePostSucces && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["c" /* Redirect */], {
                 push: true,
                 to: "/posts/userPosts/post/" + this.state.id
             });
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 "div",
-                { className: "row" },
+                { className: "col-md-8 col-md-offset-2.5" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "h3",
+                    null,
+                    "Create post"
+                ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     "div",
-                    { className: "col-md-8 col-md-offset-2.5" },
+                    { className: "panel panel-default" },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         "div",
-                        { className: "panel panel-default" },
+                        { className: "panel-body" },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            "div",
-                            { className: "panel-body" },
+                            "form",
+                            { method: "POST", action: "#", encType: "multipart/form-data" },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                "table",
-                                { className: "table table-striped task-table" },
+                                "div",
+                                { className: "form-group" },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    "thead",
-                                    null,
-                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "tr",
-                                        null,
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            "td",
-                                            null,
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                "h3",
-                                                null,
-                                                "Update post"
-                                            )
-                                        )
-                                    )
+                                    "label",
+                                    { htmlFor: "title" },
+                                    "Title:"
                                 ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+                                    type: "text",
+                                    value: this.state.title,
+                                    className: "form-control",
+                                    id: "title",
+                                    name: "title",
+                                    required: true,
+                                    onChange: this.onHandleChangeTitle
+                                }),
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                    "tbody",
-                                    null,
+                                    "span",
+                                    { className: "help-block" },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                        "tr",
+                                        "strong",
                                         null,
-                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                            "td",
-                                            null,
-                                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                "form",
-                                                { method: "POST", action: "#", className: "form-group" },
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    "div",
-                                                    { className: "form-group" },
-                                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                        "label",
-                                                        { htmlFor: "name" },
-                                                        "Title:"
-                                                    ),
-                                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
-                                                        type: "text",
-                                                        className: "form-control",
-                                                        id: "title",
-                                                        name: "title",
-                                                        required: true,
-                                                        onChange: this.onHandleChangeTitle
-                                                    })
-                                                ),
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    "div",
-                                                    { className: "form-group" },
-                                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                        "label",
-                                                        { htmlFor: "name" },
-                                                        "Text:"
-                                                    ),
-                                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("textarea", {
-                                                        id: "body",
-                                                        name: "body",
-                                                        className: "form-control",
-                                                        onChange: this.onHandleChangeBody
-                                                    })
-                                                ),
-                                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                                                    "button",
-                                                    {
-                                                        type: "submit",
-                                                        className: "btn btn-primary",
-                                                        onClick: this.onHandleClickSubmit },
-                                                    "Update"
-                                                )
-                                            )
-                                        )
+                                        this.state.errors.title[0]
                                     )
                                 )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "form-group" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "label",
+                                    { htmlFor: "body" },
+                                    "Text:"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("textarea", {
+                                    id: "body",
+                                    value: this.state.body,
+                                    name: "body",
+                                    className: "form-control",
+                                    onChange: this.onHandleChangeBody
+                                }),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "span",
+                                    { className: "help-block" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "strong",
+                                        null,
+                                        this.state.errors.body[0]
+                                    )
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "form-group" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "label",
+                                    { htmlFor: "category" },
+                                    "Category:"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "select",
+                                    {
+                                        name: "category_id",
+                                        value: this.state.value,
+                                        onChange: this.onHandleChangeCategory
+                                    },
+                                    option
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "div",
+                                { className: "form-group" },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "label",
+                                    { htmlFor: "image" },
+                                    "Upload image:"
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("input", {
+                                    type: "file",
+                                    name: "image",
+                                    id: "image",
+                                    onChange: this.onFileChange
+                                }),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    "span",
+                                    { className: "help-block" },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        "strong",
+                                        null,
+                                        this.state.errors.image[0]
+                                    )
+                                )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                "button",
+                                {
+                                    type: "submit",
+                                    className: "btn btn-primary",
+                                    onClick: this.onHandleClickSubmit },
+                                "Update"
                             )
                         )
                     )
@@ -27841,7 +27924,7 @@ var CreatePost = function (_Component) {
 
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get('/api/categories').then(function (response) {
 
-                var data = response.data;
+                var data = response.data.resource;
                 _this2.setState({
                     categories: data.categories
                 });
@@ -28096,9 +28179,7 @@ var PostsByCategory = function (_Component) {
             var _this2 = this;
 
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get("/api/posts/categories/" + categoryId).then(function (response) {
-                console.log("ajaxDone");
-                console.log(response.data.posts.data);
-                var data = response.data.posts.data;
+                var data = response.data.resource.posts.data;
                 _this2.setState({
                     posts: data,
                     ajaxDone: true

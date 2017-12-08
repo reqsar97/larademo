@@ -23,8 +23,8 @@ export default class UserPosts extends Component {
           }
         })
           .then( (response) => {
-            let data = response.data.posts.data;
-            console.log(response);
+            let data = response.data.resource.posts.data;
+            console.log(data,123);
             this.setState({
                 posts: data,
                 ajaxDone: true,
@@ -71,7 +71,7 @@ export default class UserPosts extends Component {
                 <Route path={`${url}/deletePost/:id`} component={DeletePost}/>
                 <Route path={`${url}/updatePost/:id`} component={UpdatePost}/>
                 <Route exact path={url} render={() => (
-                    <div className="row">   
+                    <div className="row">
                     <Link to='/posts/createPost' >
                     <h4>Create Post</h4>
                     </Link>
@@ -85,7 +85,7 @@ export default class UserPosts extends Component {
                     </div>
                 </div>
                 )}/>
-                
+
             </div>
         );
     }

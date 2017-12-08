@@ -19,9 +19,7 @@ export default class PostsByCategory extends Component {
     getAllPostsByCategory(categoryId){
         axios.get(`/api/posts/categories/${categoryId}`)
             .then((response)=>{
-                console.log("ajaxDone");
-                console.log(response.data.posts.data);
-                let data = response.data.posts.data;
+                let data = response.data.resource.posts.data;
                 this.setState({
                     posts: data,
                     ajaxDone: true,
@@ -69,7 +67,7 @@ export default class PostsByCategory extends Component {
         }
         return (
             <div>
-                <div className="row">   
+                <div className="row">
                     <div className="col-md-offset-3">
                         <div >
                             {posts}

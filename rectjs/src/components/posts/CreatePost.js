@@ -23,7 +23,7 @@ export default class CreatePost extends Component {
             errors: errors,
             hasError: false,
         }
-        
+
         this.onFileChange = this.onFileChange.bind(this);
         this.onHandleChangeTitle = this.onHandleChangeTitle.bind(this);
         this.onHandleChangeCategory = this.onHandleChangeCategory.bind(this);
@@ -37,7 +37,7 @@ export default class CreatePost extends Component {
         axios.get('/api/categories')
             .then( (response) => {
 
-            let data = response.data;
+            let data = response.data.resource;
             this.setState( {
                 categories: data.categories,
             });
@@ -104,13 +104,13 @@ export default class CreatePost extends Component {
                         <form method="POST" action="#" encType="multipart/form-data">
                             <div className="form-group">
                                 <label htmlFor="title">Title:</label>
-                                <input 
-                                    type="text" 
-                                    value={this.state.title} 
-                                    className="form-control" 
-                                    id="title" 
-                                    name="title" 
-                                    required 
+                                <input
+                                    type="text"
+                                    value={this.state.title}
+                                    className="form-control"
+                                    id="title"
+                                    name="title"
+                                    required
                                     onChange={this.onHandleChangeTitle}
                                     />
                                 <span className="help-block">
@@ -120,11 +120,11 @@ export default class CreatePost extends Component {
 
                             <div className="form-group">
                                 <label htmlFor="body">Text:</label>
-                                <textarea 
-                                    id="body" 
-                                    value={this.state.body} 
-                                    name="body" 
-                                    className="form-control" 
+                                <textarea
+                                    id="body"
+                                    value={this.state.body}
+                                    name="body"
+                                    className="form-control"
                                     onChange={this.onHandleChangeBody}
                                     />
                                 <span className="help-block">
@@ -134,9 +134,9 @@ export default class CreatePost extends Component {
 
                             <div className="form-group">
                                 <label htmlFor="category">Category:</label>
-                                <select 
-                                    name="category_id" 
-                                    value={this.state.value} 
+                                <select
+                                    name="category_id"
+                                    value={this.state.value}
                                     onChange={this.onHandleChangeCategory}
                                     >
                                     {option}
@@ -145,20 +145,20 @@ export default class CreatePost extends Component {
 
                             <div className="form-group">
                                 <label htmlFor="image">Upload image:</label>
-                                <input 
-                                    type="file" 
-                                    name="image"  
-                                    id="image" 
-                                    onChange={this.onFileChange} 
+                                <input
+                                    type="file"
+                                    name="image"
+                                    id="image"
+                                    onChange={this.onFileChange}
                                     />
                                 <span className="help-block">
                                     <strong>{ this.state.errors.image[0] }</strong>
                                 </span>
                             </div>
 
-                            <button 
-                                type="submit" 
-                                className="btn btn-primary" 
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
                                 onClick={this.onHandleClickSubmit}>
                                 Create
                             </button>

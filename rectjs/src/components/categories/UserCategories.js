@@ -57,8 +57,7 @@ export default class UserCategories extends Component {
                 token: localStorage.getItem('token')
             }
         }).then( (response) => {
-
-            let data = response.data.categories;
+            let data = response.data.resource.categories;
             this.setState({
                 categories: data,
                 ajaxDone: true,
@@ -89,10 +88,10 @@ export default class UserCategories extends Component {
 
         if(this.state.ajaxDone){
             categories = this.state.categories.map((value) => {
-                return <Category 
+                return <Category
                         name={value.name}
                         key={value.id}
-                        id={value.id} 
+                        id={value.id}
                         onHandleDelete={this.onHandleClickDelete}
                        />
             })

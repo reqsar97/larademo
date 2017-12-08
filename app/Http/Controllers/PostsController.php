@@ -19,14 +19,14 @@ class PostsController extends Controller
 
     public function index()
     {
-        $posts = $this->postService->all();
+        $posts = $this->postService->all()->paginate(5);
         return view('posts.index', compact('posts'));
     }
 
-    public function showByUser()
+    public function getAuthUserPosts()
     {
         $id = auth()->id();
-        $posts = $this->postService->getByAuthorId($id);
+        $posts = $this->postService->getByAuthorId($id)->paginate(5);
         return view('posts.myPosts',compact('posts'));
     }
 
@@ -69,9 +69,9 @@ class PostsController extends Controller
         return redirect('/posts');
     }
 
-    public function showByCategory($id, CategoryService $categoryService)
+    public function showByCategoryId($id, CategoryService $categoryService)
     {
-        $posts = $this->postService->getByCategoryId($id);
+        $posts = $this->postService->getByCategoryId($id)->paginate(5);
         $category = $categoryService->getById($id);
         return view('posts.category',compact(['posts','category']));
     }

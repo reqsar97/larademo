@@ -16,7 +16,7 @@ Route::get('/home', function ()
 });
 
 //Categories routes
-Route::get('/me/categories', 'CategoriesController@index');
+Route::get('/me/categories', 'CategoriesController@getAuthUserCategories');
 Route::get('/me/categories/create', 'CategoriesController@create');
 Route::post('/categories', 'CategoriesController@store');
 Route::delete('/categories/{id}','CategoriesController@delete');
@@ -25,14 +25,14 @@ Route::put('/me/categories/{id}', 'CategoriesController@update');
 
 //Posts routes
 Route::get('/posts','PostsController@index');
-Route::get('/me/posts','PostsController@showByUser');
+Route::get('/me/posts','PostsController@getAuthUserPosts');
 Route::get('/me/posts/create','PostsController@create');
 Route::post('/posts','PostsController@store');
 Route::get('/posts/{id}', 'PostsController@show');
 Route::get('/posts/{id}/edit', 'PostsController@edit');
 Route::put('/posts/{id}', 'PostsController@update');
 Route::delete('/posts/{id}', 'PostsController@delete');
-Route::get('/posts/category/{id}', 'PostsController@showByCategory');
+Route::get('/posts/category/{id}', 'PostsController@showByCategoryId');
 
 
 //social login

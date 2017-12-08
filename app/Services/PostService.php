@@ -18,8 +18,10 @@ class PostService
 
   public function all()
   {
-    return $this->posts->orderBy('created_at','desc')
-        ->paginate(5);
+    return $this->posts
+                ->orderBy('created_at','desc')
+                ->with('category')
+                ->with('user');
   }
 
   public function create($inputs)
@@ -50,7 +52,8 @@ class PostService
   {
     return $this->posts
                 ->where('id', $id)
-                ->get()
+                ->with('category')
+                ->with('user')
                 ->first();
   }
 
@@ -59,7 +62,8 @@ class PostService
     return $this->posts
                 ->orderBy('created_at','desc')
                 ->where('user_id',$id)
-                ->paginate(5);
+                ->with('category')
+            	  ->with('user');
   }
 
   public function getByCategoryId($id)
@@ -67,6 +71,7 @@ class PostService
     return $this->posts
                 ->orderBy('created_at','desc')
                 ->where('category_id',$id)
-                ->paginate(5);
+                ->with('user')
+                ->with('category');
   }
 }

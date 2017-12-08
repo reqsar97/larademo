@@ -6,18 +6,51 @@ export default class UpdatePost extends Component {
     constructor(props) {
         // code
         super(props)
+
+        let errors = {
+            title: [],
+            body: [],
+            image: [],
+        }
+
         let id = this.props.match.params.id;
         this.state = {
             id: id,
             title:'',
             body:'',
+            image: '',
+            category: '',
+            categories: [],
             updatePostSucces: false,
-            errors: []
+            errors: errors,
+            hasError: false,
         }
 
+        this.onFileChange = this.onFileChange.bind(this);
         this.onHandleChangeTitle = this.onHandleChangeTitle.bind(this);
+        this.onHandleChangeCategory = this.onHandleChangeCategory.bind(this);
         this.onHandleChangeBody = this.onHandleChangeBody.bind(this);
         this.onHandleClickSubmit = this.onHandleClickSubmit.bind(this);
+
+        this.getAllCategories();
+    }
+
+    getAllCategories(){
+        axios.get('/api/categories')
+            .then( (response) => {
+
+            let data = response.data.resource;
+            this.setState( {
+                categories: data.categories,
+            });
+            }).catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    onFileChange(e){
+        let files = e.target.files || e.dataTransfer.files;
+        this.setState({ image: files[0] });
     }
 
     onHandleChangeTitle(e){
@@ -30,17 +63,25 @@ export default class UpdatePost extends Component {
         this.setState({ body:body });
     }
 
+    onHandleChangeCategory(e){
+        let category = e.target.value;
+        this.setState({ category: category });
+    }
+
     onHandleClickSubmit(e){
         e.preventDefault();
-        axios.put(`/api/posts/${this.state.id}`, {
-                token: localStorage.getItem('token'),
-                title: this.state.title,
-                body: this.state.body,
-        })
+        let data = new FormData();
+        data.append('title', this.state.title);
+        data.append('body', this.state.body);
+        data.append('category_id', this.state.category);
+        data.append('image', this.state.image);
+        data.append('token', localStorage.getItem('token'));
+
+        axios.post('/api/posts', data)
             .then( (response) => {
-                console.log(response);
-                this.setState({createPostSuccess: true})
+                this.setState({updatePostSucces: true});
             }).catch( (error) => {
+                console.log(error);
                 var errors = error.response.data;
                 this.setState({errors: errors});
             });
@@ -48,68 +89,85 @@ export default class UpdatePost extends Component {
     }
 
     render(){
-
-        let redirect = this.state.createPostSuccess && 
-                <Redirect 
-                  push 
-                  to={`/posts/userPosts/post/${this.state.id}`} 
+        let option = <option value="id">Category NAme</option>
+        if(this.state.categories){
+            option = this.state.categories.map((value)=>{
+                return <option value={value.id} key={value.id}>{value.name}</option>
+            })
+        }
+        let redirect = this.state.updatePostSucces &&
+                <Redirect
+                  push
+                  to={`/posts/userPosts/post/${this.state.id}`}
                   />;
 
         return (
-            <div className="row">
-                <div className="col-md-8 col-md-offset-2.5">
-                    <div className="panel panel-default">
-                        <div className="panel-body">
+            <div className="col-md-8 col-md-offset-2.5">
+                <h3>Create post</h3>
+                <div className="panel panel-default">
+                    <div className="panel-body">
+                        <form method="POST" action="#" encType="multipart/form-data">
+                            <div className="form-group">
+                                <label htmlFor="title">Title:</label>
+                                <input
+                                    type="text"
+                                    value={this.state.title}
+                                    className="form-control"
+                                    id="title"
+                                    name="title"
+                                    required
+                                    onChange={this.onHandleChangeTitle}
+                                    />
+                                <span className="help-block">
+                                    <strong>{ this.state.errors.title[0] }</strong>
+                                </span>
+                            </div>
 
-                            <table className="table table-striped task-table">
-                                <thead>
-                                <tr>
-                                    <td>
-                                        <h3>Update post</h3>
-                                    </td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <form method="POST" action="#" className="form-group">
-                                                <div className="form-group">
-                                                    <label htmlFor="name">Title:</label>
-                                                    <input 
-                                                        type="text" 
-                                                        className="form-control" 
-                                                        id="title" 
-                                                        name="title" 
-                                                        required 
-                                                        onChange={this.onHandleChangeTitle}
-                                                    />
-                                                </div>
+                            <div className="form-group">
+                                <label htmlFor="body">Text:</label>
+                                <textarea
+                                    id="body"
+                                    value={this.state.body}
+                                    name="body"
+                                    className="form-control"
+                                    onChange={this.onHandleChangeBody}
+                                    />
+                                <span className="help-block">
+                                    <strong>{ this.state.errors.body[0] }</strong>
+                                </span>
+                            </div>
 
-                                                <div className="form-group">
-                                                    <label htmlFor="name">Text:</label>
-                                                    <textarea 
-                                                        id="body" 
-                                                        name="body" 
-                                                        className="form-control" 
-                                                        onChange={this.onHandleChangeBody} 
-                                                        />
-                                                </div>
+                            <div className="form-group">
+                                <label htmlFor="category">Category:</label>
+                                <select
+                                    name="category_id"
+                                    value={this.state.value}
+                                    onChange={this.onHandleChangeCategory}
+                                    >
+                                    {option}
+                                </select>
+                            </div>
 
-                                                <button 
-                                                    type="submit" 
-                                                    className="btn btn-primary" 
-                                                    onClick={this.onHandleClickSubmit}>
-                                                  Update
-                                                </button>
-                                            </form>
+                            <div className="form-group">
+                                <label htmlFor="image">Upload image:</label>
+                                <input
+                                    type="file"
+                                    name="image"
+                                    id="image"
+                                    onChange={this.onFileChange}
+                                    />
+                                <span className="help-block">
+                                    <strong>{ this.state.errors.image[0] }</strong>
+                                </span>
+                            </div>
 
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-
-                        </div>
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
+                                onClick={this.onHandleClickSubmit}>
+                                Update
+                            </button>
+                        </form>
                     </div>
                 </div>
                 {redirect}

@@ -11,7 +11,7 @@ export default class AddCategory extends Component {
             hasError: false,
             isAddCategory: false
         }
-        
+
         //bind functions
         this.onHandleChangeName = this.onHandleChangeName.bind(this);
         this.onHandleSubmit = this.onHandleSubmit.bind(this);
@@ -31,7 +31,6 @@ export default class AddCategory extends Component {
             name: name,
             token: localStorage.getItem('token')
           }).then( (response) => {
-            console.log(response.status);
             this.setState({
                 isAddCategory: true
             });
@@ -56,10 +55,10 @@ export default class AddCategory extends Component {
 
                                 <div className="form-group">
                                     <label htmlFor="name">Name:</label>
-                                    <input type="text" 
-                                           className="form-control" 
-                                           id="name" 
-                                           name="name" 
+                                    <input type="text"
+                                           className="form-control"
+                                           id="name"
+                                           name="name"
                                            onChange={this.onHandleChangeName}
                                     />
                                     <span className="help-block">
@@ -67,8 +66,8 @@ export default class AddCategory extends Component {
                                             </span>
                                 </div>
 
-                                <button type="submit" 
-                                        className="btn btn-primary" 
+                                <button type="submit"
+                                        className="btn btn-primary"
                                         onClick={this.onHandleSubmit}>
                                     Create
                                 </button>

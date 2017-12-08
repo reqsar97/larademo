@@ -45,7 +45,7 @@ export default class Login extends Component{
 
     onHandleChangePassword(e){
         const password = e.target.value;
-        this.setState({password: password});    
+        this.setState({password: password});
     }
 
     onHandleSubmit(e){
@@ -57,15 +57,16 @@ export default class Login extends Component{
             password: password
           })
           .then( (response) => {
-            
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('name', response.data.name);
+            let data = response.data.resourse;
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('name', data.name);
             localStorage.setItem('isLogged', 1);
-            
+
             this.props.onLogin(true);
             this.setState({isLogged: true});
           })
           .catch( (error) => {
+            console.log(error);
             var errors = error.response.data.errors;
             console.log(errors);
             this.setState({
@@ -89,7 +90,7 @@ export default class Login extends Component{
                 fieldError[error] = this.state.errors[error][0];
             }
         }
-        
+
         let redirect = this.state.isLogged ? <Redirect to="api" /> : null;
         return (
 
@@ -108,13 +109,13 @@ export default class Login extends Component{
                                         </label>
 
                                         <div className="col-md-6">
-                                            <input id="email" 
-                                                   type="email" 
-                                                   className="form-control" 
-                                                   name="email" 
-                                                   value={this.state.email} 
-                                                   required 
-                                                   autoFocus 
+                                            <input id="email"
+                                                   type="email"
+                                                   className="form-control"
+                                                   name="email"
+                                                   value={this.state.email}
+                                                   required
+                                                   autoFocus
                                                    onChange={this.onHandleChangeEmail}
                                             />
                                             <span className="help-block">
@@ -127,13 +128,13 @@ export default class Login extends Component{
                                         <label htmlFor="password" className="col-md-4 control-label"  >Password</label>
 
                                         <div className="col-md-6">
-                                            <input id="password" 
-                                                   type="password" 
-                                                   className="form-control" 
-                                                   onChange={this.onHandleChangePassword} 
-                                                   value={this.state.password} 
-                                                   name="password" 
-                                                   required 
+                                            <input id="password"
+                                                   type="password"
+                                                   className="form-control"
+                                                   onChange={this.onHandleChangePassword}
+                                                   value={this.state.password}
+                                                   name="password"
+                                                   required
                                             />
                                             <span className="help-block">
                                                 <strong>{ fieldError['password'] }</strong>
@@ -153,8 +154,8 @@ export default class Login extends Component{
 
                                     <div className="form-group">
                                         <div className="col-md-8 col-md-offset-4">
-                                            <button type="submit" 
-                                                    className="btn btn-primary" 
+                                            <button type="submit"
+                                                    className="btn btn-primary"
                                                     onClick={this.onHandleSubmit}>
                                                 Login
                                             </button>

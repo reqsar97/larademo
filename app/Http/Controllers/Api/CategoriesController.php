@@ -3,62 +3,70 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\Api\CategoryRequest;
+use App\Services\CategoryService;
+use App\Services\PostService;
 use App\Http\Controllers\Controller;
-use App\Category;
-use App\User;
-use App\Post;
 use JWTAuth;
-use JWTAuthException;
-use Validator;
+use App\User;
 
 class CategoriesController extends Controller
 {
-    public function getAllCategories()
+    protected $categoryService;
+
+    public function __construct(CategoryService $categoryService)
     {
-    	$categories = Category::categories();
-		$postCount = Post::all()->count();
-		$userCount = User::all()->count();
-    	return response()->json(compact(['categories','postCount', 'userCount']), 200);
+        $this->categoryService = $categoryService;
+    }
+
+    public function index(PostService $postService)
+    {
+    	$categories = $this->categoryService->all();
+		  $postCount = $postService->all()->count();
+		  $userCount = User::all()->count();
+    	return response()->json(
+        ['status' => 'success',
+         'message' => 'Get all categories',
+         'resource' => compact(['categories','postCount', 'userCount'])], 200);
     }
 
     public function getAuthUserCategories(Request $request)
     {
-    	$user = JWTAuth::toUser($request->token);
-        $categories = Category::getUserCategories($user->id);
-        return response()->json(compact('categories'), 200);
+    	  $user = JWTAuth::toUser($request->token);
+        $categories = $user->categories;
+        return response()->json(
+          ['status' => 'success',
+           'message' => 'get all user categories',
+           'resource' => compact('categories')], 200);
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $validator = Validator::make($request->only('name'), [
-            'name' => 'required|string|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors'=>$validator->errors()], 422);
-        }
-        $user = JWTAuth::toUser($request->token);
-        $user->createCategory(
-            new Category(request(['name']))
-        );
-
-        return response()->json(['message'=>'Category created successfully']);
-
+        $inputs = $request->all();
+        $this->categoryService->create($inputs);
+        return response()->json(
+          ['status' => 'success',
+           'message'=>'Category created successfully',
+           'resource' => null], 200);
     }
 
-    public function delete(Category $category)
+    public function delete($id)
     {
-        $category->delete();
-
-        return response()->json(['message' => 'Category deleted successfully']);
+        $this->categoryService->delete($id);
+        return response()->json(
+          ['status' => 'success',
+           'message' => 'Category deleted successfully',
+           'resource' => null], 200);
     }
 
-    public function update(Category $category)
+    public function update(CategoryRequest $request, $id)
     {
-        $category->name = request('name');
-        $category->save();
-
-        return response()->json(['message' => 'Category updated successfully']);;
+        $inputs = $request->all();
+        $this->categoryService->update($inputs, $id);
+        return response()->json(
+          ['status' => 'success',
+           'message' => 'Category updated successfully',
+           'resource' => null]);
     }
 
 }

@@ -19,9 +19,4 @@ class Post extends Model
         return $this->belongsTo('App\Category');
     }
 
-    public function categoryName($category_id)
-    {
-        return Category::all()->where('id',$category_id)->first()->name;
-    }
-
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\CategoryService;
 use App\Http\Requests\CategoryRequest;
+use App\Category;
 
 class CategoriesController extends Controller
 {
@@ -16,11 +17,9 @@ class CategoriesController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    public function index()
-    {
-        $id = auth()->id();
-        $categories = $this->categoryService->getByAuthorId($id);
-        return view('categories.categories', compact('categories'));
+    public function getAuthUserCategories(){
+      $categories = auth()->user()->categories;
+      return view('categories.categories', compact('categories'));
     }
 
     public function create()

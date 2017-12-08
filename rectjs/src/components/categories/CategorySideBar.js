@@ -28,7 +28,8 @@ export default class CategorySideBar extends Component {
         axios.get('/api/categories')
             .then( (response) => {
 
-            let data = response.data;
+            let data = response.data.resource;
+            console.log(response);
             this.setState( {
                 ajaxDone: true,
                 categories: data.categories,
@@ -45,11 +46,10 @@ export default class CategorySideBar extends Component {
     componentDidMount(){
         this.getAllCategories();
     }
-    
+
     // methods
     render(){
         var categoriesElement = [];
-
         if(this.state.ajaxDone){
             categoriesElement = this.state.categories.map(function(value){
                 let li = (

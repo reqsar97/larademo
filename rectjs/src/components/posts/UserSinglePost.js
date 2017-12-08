@@ -16,15 +16,14 @@ export default class UserSinglePost extends Component {
             url: '#',
             id: ''
         };
-        
+
     }
 
     componentDidMount(){
         let id = this.props.match.params.id;
         axios.get(`/api/posts/${id}`)
           .then( (response) => {
-            console.log(response.data.post);
-            let data = response.data.post;
+            let data = response.data.resource.post;
             this.setState({
                 body: data.body,
                 category: data.category.name,
@@ -55,7 +54,7 @@ export default class UserSinglePost extends Component {
                       singlePost={true}
                     />;
         return (
-            <div className="row">   
+            <div className="row">
                     <div className="col-md-offset-3">
                         <div >
                             {post}

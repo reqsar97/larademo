@@ -17,8 +17,7 @@ class Posts extends Component{
     componentDidMount(){
         axios.get('/api/posts')
           .then( (response) => {
-            console.log(response.data.posts.data);
-            let data = response.data.posts.data;
+            let data = response.data.resource.posts.data;
             this.setState({
                 posts: data,
                 ajaxDone: true
@@ -54,7 +53,7 @@ class Posts extends Component{
 
         return (
             <div>
-                <div className="row">   
+                <div className="row">
                     <div className="col-md-offset-3">
                         <div >
                             {posts}

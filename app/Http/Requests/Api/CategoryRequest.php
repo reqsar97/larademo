@@ -5,20 +5,15 @@ namespace App\Http\Requests\Api;
 use Illuminate\Foundation\Http\FormRequest;
 use JWTAuth;
 
-class StorePostRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
 
     public function all()
     {
-
        $inputs = parent::all();
-
        $user = JWTAuth::toUser($inputs['token']);
-
        unset($inputs['token']);
-
        $inputs['user_id'] = $user->id;
-
        return $inputs;
     }
 
@@ -40,10 +35,7 @@ class StorePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'=>'required',
-            'body'=>'required',
-            'category_id'=>'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'name' => 'required|string|max:255'
         ];
     }
 }
