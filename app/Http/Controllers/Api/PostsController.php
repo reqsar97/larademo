@@ -18,7 +18,7 @@ class PostsController extends Controller
         $this->postService = $postService;
     }
 
-
+    //return all posts
     public function index()
     {
         $posts = $this->postService
@@ -77,7 +77,7 @@ class PostsController extends Controller
         $this->postService->delete($id);
         return response()->json(
           ['success' => 'true',
-           'message' => 'Post deleted successfully'
+           'message' => 'Post deleted successfully',
            'resource' => null], 200);
     }
 

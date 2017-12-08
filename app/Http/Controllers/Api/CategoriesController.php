@@ -19,6 +19,7 @@ class CategoriesController extends Controller
         $this->categoryService = $categoryService;
     }
 
+    //return all categories 
     public function index(PostService $postService)
     {
     	$categories = $this->categoryService->all();
