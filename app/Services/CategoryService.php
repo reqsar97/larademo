@@ -11,14 +11,7 @@ class CategoryService
 
   function __construct(Category $categories)
   {
-    # code...
     $this->categories = $categories;
-  }
-
-  public function category()
-  {
-    # code...
-    return $this->categories;
   }
 
   public function all()
