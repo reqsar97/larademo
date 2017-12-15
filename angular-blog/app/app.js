@@ -1,7 +1,7 @@
 // localStorage.setItem('isLogged', 0);
 var app = angular.module('myApp', [
-	'ngRoute',
-	'app.controllers',
+	  'ngRoute',
+	  'app.controllers',
 
 ])
 
