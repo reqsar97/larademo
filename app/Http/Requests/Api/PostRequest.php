@@ -13,6 +13,7 @@ class PostRequest extends FormRequest
      $inputs = parent::all();
      $user = JWTAuth::toUser($inputs['token']);
      unset($inputs['token']);
+     unset($inputs['_method']);
      $inputs['user_id'] = $user->id;
      return $inputs;
   }

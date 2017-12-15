@@ -1,0 +1,41 @@
+    <h3>My Categories</h3>
+    <a href='#!me/categories/create'> <h4>Create category</h4></a>
+    <div class="row">
+        <div class="col-md-offset-3">
+                <div >
+                <ol class="list-unstyled">
+                        <div class="panel-body">
+                            <table class="table table-striped task-table">
+                                <thead>
+                                <th>My Categories</th>
+                                <th>&nbsp;</th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="category in userCategories">
+                                        <td class="table-text"><div>{{ category.name }}</div></td>
+
+                                        <!-- Task Delete Button -->
+                                        <td>
+                                            <form>
+
+                                                <button ng-click='deleteCategory(category.id)' type="submit" class="btn btn-primary">
+                                                    <i class="fa fa-btn fa-trash"></i>DELETE
+                                                </button>
+                                            </form>
+                                        </td>
+                                        <!-- Task Update Button -->
+                                        <td>
+                                          <a href='{{"#!me/categories/" + category.id}}'>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fa fa-btn fa-trash"></i>Update
+                                            </button>
+                                          </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                </ol>
+                </div>
+        </div>
+    </div>

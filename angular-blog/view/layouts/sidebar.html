@@ -1,0 +1,15 @@
+<div class="col-sm-3 offset-sm-1" ng-controller="sidebarController">
+    <div class="sidebar-module top-left">
+        <ol class="list-unstyled">
+            <li>Count of Categories: {{sidebarData.categories.length}}</li>
+            <li>Count of Posts: {{sidebarData.postCount}}</li>
+            <li>Count of Users: {{sidebarData.userCount}}</li>
+        </ol>
+        <h4>Categories</h4>
+        <ol class="list-unstyled" ng-repeat="x in sidebarData.categories">
+            <li>
+                <a href={{"#!posts/category/"+x.id}}>{{x.name}}</a>
+            </li>
+        </ol>
+    </div>
+</div>

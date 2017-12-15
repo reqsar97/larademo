@@ -8,8 +8,6 @@
             <h3>{{$message}}</h3>
         </div>
     @endif
-
-
     <div class="row">
         <div class="col-md-8 col-md-offset-2.5">
             <div class="panel panel-default">

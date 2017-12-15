@@ -1,0 +1,33 @@
+<h3>Update Post</h3>
+    <div class="col-md-8 col-md-offset-2.5">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input ng-model="inputs.name" type="text" class="form-control" id="title" name="title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="body">Text:</label>
+                        <textarea ng-model="inputs.body" id="body" name="body" class="form-control" ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category:</label>
+                        <select name="category_id" ng-model="inputs.category_id">
+                                <option ng-repeat="category in categories" value="{{category.id}}">{{category.name}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image">Upload image:</label>
+                        <!-- <input fileread="vm.uploadme"  type="file" name="image" id="image" > -->
+                        <input type="file" file-model="myFile"/>
+                    </div>
+
+                    <button ng-click="updatePost(inputs)" type="submit" class="btn btn-primary">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
